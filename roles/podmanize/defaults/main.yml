@@ -1,0 +1,7 @@
+---
+
+registry_auth_file: '{{resources_home_dir}}/hr-hiring/auth.json'
+redhat_uname: 'username'
+redhat_pword: 'Password1!'
+push_username: 'username'
+push_password: 'Password1!'

@@ -1,0 +1,5 @@
+---
+
+# In a shared GPTE cluster (ie: na311), this value will be over-written
+guid: "{{ ocp_user }}"  
+

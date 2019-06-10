@@ -1,0 +1,36 @@
+---
+- name: Deploy HR Hiring Development environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  run_once: true
+  vars_files:
+    - group_vars/hr_hiring.yml
+    - group_vars/tools.yml
+
+  tasks:
+    - set_fact:
+        ocp_project: "{{ project_rhpam }}"
+        ocp_project_display_name: "{{ project_rhpam_display_name }}"
+        ocp_project_desc: "{{ project_rhpam_desc }}"
+        work_dir_name: hr-hiring
+        resources_dir: "{{ resources_home_dir }}/hr-hiring"
+        uninstall_delete_project: true
+    - include_role:
+        name: ../roles/podmanize
+      when: >
+        PODMANIZE is defined and 
+        PODMANIZE | trim() == "true"
+    - include_role:
+        name: ../roles/kie-hiring-openshift
+      when: >
+        ACTION is not defined or
+        ACTION is none or
+        ACTION | trim() == "" or
+        ACTION | trim() == "install"
+    - include_role:
+        name: ../roles/kie-hiring-openshift
+        tasks_from: uninstall
+      when: >
+        ACTION is defined and 
+        ACTION | trim() == "uninstall"

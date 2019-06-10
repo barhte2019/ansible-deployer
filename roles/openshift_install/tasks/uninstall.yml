@@ -1,0 +1,17 @@
+---
+
+- name: uninstall hiring kie server
+  import_role: 
+    name: kie-hiring-openshift
+    tasks_from: uninstall
+  vars:
+    ocp_project: "{{ project_rhpam }}"
+    ocp_project_display_name: "{{ project_rhpam_display_name }}"
+    ocp_project_desc: "{{ project_rhpam_desc }}"
+    work_dir_name: rhpam-dev
+    resources_dir: "{{ resources_home_dir }}/rhpam"
+
+- name: uninstall quota
+  import_role:
+    name: openshift_quota
+    tasks_from: uninstall

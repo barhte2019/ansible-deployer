@@ -1,0 +1,10 @@
+---
+
+- name: Build and push image
+  podman_image:
+    name: '{{custom_image_name}}:{{custom_image_label}}'
+    path: '{{resources_home_dir}}/hr-hiring'
+    push: yes
+    auth_file: '{{registry_auth_file}}'
+    push_args:
+      dest: '{{custom_registry}}'

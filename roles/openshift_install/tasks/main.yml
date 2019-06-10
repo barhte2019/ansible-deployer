@@ -1,0 +1,11 @@
+---
+
+- name: install kie-hiring server
+  import_role: 
+    name: kie-hiring-openshift
+  vars:
+    ocp_project: "{{ project_rhpam }}"
+    ocp_project_display_name: "{{ project_rhpam_display_name }}"
+    ocp_project_desc: "{{ project_rhpam_desc }}"
+    work_dir_name: hr-hiring
+    resources_dir: "{{ resources_home_dir }}/hr-hiring"    

@@ -1,0 +1,21 @@
+---
+
+custom_image_name: kie-hiring
+custom_image_label: '1.4'
+custom_registry_domain: quay.io
+custom_registry: '{{custom_registry_domain}}/diego_torres'
+
+home_dir: "{{ playbook_dir }}/../"
+
+# resources dir
+resources_home_dir: "{{ home_dir }}/resources"
+
+# oc executable
+openshift_cli: oc
+
+project_admin: "{{ ocp_user }}"
+project_annotations: "openshift.io/requester={{ ocp_user }}"
+
+user_prefix: user
+
+use_cluster_quota: false

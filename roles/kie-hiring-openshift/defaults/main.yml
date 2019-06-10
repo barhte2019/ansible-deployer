@@ -1,0 +1,51 @@
+---
+
+application_name: kie-hiring
+kieserver_application_name: "{{ application_name }}-kieserver"
+kieserver_image_namespace: openshift
+#kieserver_image: rhpam72-kieserver-openshift
+kieserver_image: kie-hiring
+kieserver_image_tag: 1.4
+
+service_account: "{{ application_name }}-rhpamsvc"
+kieserver_template: "{{ resources_dir }}/hiring-kieserver.yml"
+
+kieserver_cpu_request: 200m
+kieserver_memory_request: 1Gi
+kieserver_cpu_limit: 1000m
+kieserver_memory_limit: 3Gi
+kieserver_java_max_mem_ratio: 60
+kieserver_java_initial_mem_ratio: 0
+kieserver_gc_max_metaspace_size: 500
+
+kie_admin_user: adminUser
+kie_admin_password: admin1!
+kieserver_user: executionUser
+kieserver_password: execution1!
+kie_maven_user: mavenUser
+kie_maven_password: maven1!
+kie_mbeans: enabled
+
+drools_server_filter_classes: true
+kieserver_bypass_auth_user: true
+kieserver_port: 8080
+kieserver_protocol: http
+
+postgresql_template: "{{resources_home_dir}}/hr-hiring/postgresql.yml"
+postgresql_application_name: "{{ application_name }}-postgresql"
+postgresql_credentials_secret: "{{ postgresql_application_name }}" 
+postgresql_init_configmap: "{{ postgresql_application_name }}-init"
+postgresql_pv_capacity: 5Gi
+postgresql_version: 9.6
+postgresql_is_namespace: openshift
+postgresql_username: rhpam
+postgresql_password: rhpam
+postgresql_database: rhpam
+postgresql_max_connections: 100
+postgresql_max_prepared_transactions: 100
+postgresql_memory_limit: 512Mi
+
+psql_cpu_request: 250m
+psql_memory_request: 256Mi
+psql_cpu_limit: 500m
+psql_memory_limit: 512Mi
