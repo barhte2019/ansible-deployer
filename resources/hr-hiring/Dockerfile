@@ -12,10 +12,12 @@ RUN mvn --file build/hr-hiring/pom.xml --batch-mode install -DskipTests
 FROM registry.redhat.io/rhpam-7/rhpam73-kieserver-openshift
 COPY --from=builder /root/.m2/repository /home/jboss/.m2/repository/
 COPY cli-cors-config.txt /tmp/cli-cors-config.txt
+COPY execute-admin-server.sh /tmp/execute-admin-server.sh
 USER root
 RUN chown jboss:jboss -R /home/jboss
 RUN chmod -R 777 /home/jboss
 RUN chmod 644 /tmp/cli-cors-config.txt
+RUN chmod 777 /tmp/execute-admin-server.sh
 USER jboss
 RUN /opt/eap/bin/add-user.sh -a -u 'Bob' -p 'Password1!' -g 'kie-server,interviewer'
 RUN /opt/eap/bin/add-user.sh -a -u 'Ann' -p 'Password1!' -g 'kie-server,interviewer'
@@ -25,11 +27,6 @@ RUN /opt/eap/bin/add-user.sh -a -u 'Tina' -p 'Password1!' -g 'kie-server,talent-
 RUN /opt/eap/bin/add-user.sh -a -u 'Bill' -p 'Password1!' -g 'kie-server,applicant'
 RUN /opt/eap/bin/add-user.sh -a -u 'Ava' -p 'Password1!' -g 'kie-server,applicant'
 RUN /opt/eap/bin/add-user.sh -a -u 'Super' -p 'Password1!' -g 'kie-server,admin,Administrators'
-RUN /opt/eap/bin/standalone.sh --admin-only -c standalone-openshift.xml &
-RUN sleep 15;
-RUN /opt/eap/bin/jboss-cli.sh --connect --file=/tmp/cli-cors-config.txt
-RUN /opt/eap/bin/jboss-cli.sh --connect ":shutdown"
-RUN sleep 5;
-
+CMD ["/tmp/execute-admin-server.sh"]
 
 ENV KIE_SERVER_CONTAINER_DEPLOYMENT=hr-hiring=org.acme:hr-hiring:1.0.0

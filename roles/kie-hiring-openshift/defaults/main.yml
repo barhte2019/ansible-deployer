@@ -5,7 +5,7 @@ kieserver_application_name: "{{ application_name }}-kieserver"
 kieserver_image_namespace: openshift
 #kieserver_image: rhpam72-kieserver-openshift
 kieserver_image: kie-hiring
-kieserver_image_tag: 1.4
+kieserver_image_tag: 1.5
 
 service_account: "{{ application_name }}-rhpamsvc"
 kieserver_template: "{{ resources_dir }}/hiring-kieserver.yml"
