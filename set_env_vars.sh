@@ -14,5 +14,3 @@ echo "export RHPAM_PROJECT=rhpam-dev-\$OCP_USERNAME" >> ~/.bashrc
 echo "export RHPAM_TOOLS_PROJECT=pam-7-tools-\$OCP_USERNAME" >> ~/.bashrc
 echo "export RHSSO_PROJECT=rhsso_sso0" >> ~/.bashrc
 
-source ~/.bashrc
-
