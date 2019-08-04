@@ -1,5 +1,8 @@
 ---
 
+# TO-DO
+# oc adm policy add-role-to-user view user1 -n rhsso-sso0
+
 - name: Add kie-hiring custom imagestream
   oc_image:
     state: present
