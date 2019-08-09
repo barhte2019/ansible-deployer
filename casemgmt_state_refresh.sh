@@ -1,6 +1,7 @@
 new_guid=`echo $HOSTNAME | cut -d'.' -f 1 | cut -d'-' -f 2`
 stale_guid=`cat $HOME/guid`
 pam_project=rhpam-dev-user1
+sso_project=rhsso-sso0
 
 enableLetsEncryptCertsOnRoutes() {
     oc new-project prod-letsencrypt
@@ -8,7 +9,9 @@ enableLetsEncryptCertsOnRoutes() {
     oc adm policy add-cluster-role-to-user openshift-acme -z openshift-acme
 
     echo -en "metadata:\n  annotations:\n    kubernetes.io/tls-acme: \"true\"" > /tmp/route-tls-patch.yml
-    oc patch route system-master --type merge --patch "$(cat /tmp/route-tls-patch.yml)" -n $pam_project
+    oc patch route rhpam-bc --type merge --patch "$(cat /tmp/route-tls-patch.yml)" -n $pam_project
+    oc patch route rhpam-kieserver --type merge --patch "$(cat /tmp/route-tls-patch.yml)" -n $pam_project
+    oc patch route sso --type merge --patch "$(cat /tmp/route-tls-patch.yml)" -n $sso_project
 }
 
 refreshPAM() {
