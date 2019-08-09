@@ -5,7 +5,7 @@ sso_project=rhsso-sso0
 
 enableLetsEncryptCertsOnRoutes() {
     oc new-project prod-letsencrypt
-    oc create -fhttps://raw.githubusercontent.com/tnozicka/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/{clusterrole,serviceaccount,imagestream,deployment}.yaml -n prod-letsencrypt
+    oc create -fhttps://raw.githubusercontent.com/gpe-mw-training/openshift-acme/master/deploy/letsencrypt-live/cluster-wide/{clusterrole,serviceaccount,imagestream,deployment}.yaml -n prod-letsencrypt
     oc adm policy add-cluster-role-to-user openshift-acme -z openshift-acme -n prod-letsencrypt
 
     echo -en "metadata:\n  annotations:\n    kubernetes.io/tls-acme: \"true\"" > /tmp/route-tls-patch.yml
