@@ -22,10 +22,6 @@ refreshPAM() {
     # Switch to namespace of API Manager Control Plane
     oc project $pam_project
 
-    oc scale dc/rhpam-bc --replicas=0 -n $pam_project
-    oc scale dc/rhpam-kieserver --replicas=0 -n $pam_project
-
-
     # Will need to delete and re-create BC's PVC
     #   When modifying dc/rhpam-bc, the owning user of the files on the PVC switches from "jboss" to a random UID
     #   The subsequent rhpam-bc container is unable to then write to this PVC
@@ -54,7 +50,7 @@ EOL
 
     #### Update BC with correct SSO_URL
     oc patch dc/rhpam-bc -p '{"spec":{"template":{"spec":{"containers":[{"name":"rhpam-bc","env":[{"name":"SSO_URL","value":"https://sso-rhsso-sso0.apps-'$new_guid'.generic.opentlc.com/auth"}]}]}}}}'
-    oc scale dc/rhpam-bc --replicas=1
+    oc rollout resume dc/rhpam-bc -n $pam_project
 
     echo -en "\nPause for the following number of seconds: $wait_for_bc \n"
     sleep $wait_for_bc
@@ -63,7 +59,7 @@ EOL
 
     #### Update Kie-server with correct SSO_URL
     oc patch dc/rhpam-kieserver -p '{"spec":{"template":{"spec":{"containers":[{"name":"rhpam-kieserver","env":[{"name":"SSO_URL","value":"https://sso-rhsso-sso0.apps-'$new_guid'.generic.opentlc.com/auth"}]}]}}}}'
-    oc scale dc/rhpam-kieserver --replicas=1
+    oc rollout resume dc/rhpam-kieserver -n $pam_project
 }
 
 enableLetsEncryptCertsOnRoutes
