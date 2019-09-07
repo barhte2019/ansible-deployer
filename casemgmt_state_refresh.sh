@@ -58,7 +58,7 @@ EOL
 
 
     #### Update Kie-server with correct SSO_URL
-    oc patch dc/rhpam-kieserver -p '{"spec":{"template":{"spec":{"containers":[{"name":"rhpam-kieserver","env":[{"name":"SSO_URL","value":"https://sso-rhsso-sso0.apps-'$new_guid'.generic.opentlc.com/auth"}]}]}}}}'
+    oc patch dc/rhpam-kieserver -p '{"spec":{"template":{"spec":{"containers":[{"name":"rhpam-kieserver","env":[{"name":"SSO_URL","value":"https://sso-rhsso-sso0.apps-'$new_guid'.generic.opentlc.com/auth"},{"name":"SSO_PRINCIPAL_ATTRIBUTE","value":"preferred_username"}]}]}}}}'
     oc rollout resume dc/rhpam-kieserver -n $pam_project
 }
 
@@ -66,4 +66,3 @@ enableLetsEncryptCertsOnRoutes
 refreshPAM
 
 echo $new_guid > $HOME/guid
-
