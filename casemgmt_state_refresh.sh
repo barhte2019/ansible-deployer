@@ -18,7 +18,7 @@ enableLetsEncryptCertsOnRoutes() {
 restartRHSSO() {
     oc scale dc/sso-mysql --replicas=1 -n $sso_project
     sleep 10
-    oc scale dc/sso-mysql --replicas=1 -n $sso_project
+    oc scale dc/sso --replicas=1 -n $sso_project
     sleep 10
 }
 
