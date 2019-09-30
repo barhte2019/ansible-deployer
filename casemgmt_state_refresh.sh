@@ -15,12 +15,22 @@ enableLetsEncryptCertsOnRoutes() {
     oc patch route sso --type merge --patch "$(cat /tmp/route-tls-patch.yml)" -n $sso_project
 }
 
+restartRHSSO() {
+    oc scale dc/sso-mysql --replicas=1 -n $sso_project
+    sleep 10
+    oc scale dc/sso-mysql --replicas=1 -n $sso_project
+    sleep 10
+}
+
 refreshPAM() {
     echo -en "\nwill update the following stale guid in the Process Automation Manager: $stale_guid\n\n"
     wait_for_bc=15
 
     # Switch to namespace of API Manager Control Plane
     oc project $pam_project
+
+    # Restart KIE Server Postgresql
+    oc scale dc/rhpam-postgresql --replicas=1 -n $pam_project
 
     # Will need to delete and re-create BC's PVC
     #   When modifying dc/rhpam-bc, the owning user of the files on the PVC switches from "jboss" to a random UID
@@ -62,7 +72,8 @@ EOL
     oc rollout resume dc/rhpam-kieserver -n $pam_project
 }
 
-enableLetsEncryptCertsOnRoutes
+#enableLetsEncryptCertsOnRoutes
 refreshPAM
+restartRHSSO
 
 echo $new_guid > $HOME/guid
