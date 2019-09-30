@@ -73,7 +73,7 @@ EOL
 }
 
 #enableLetsEncryptCertsOnRoutes
-refreshPAM
 restartRHSSO
+refreshPAM
 
 echo $new_guid > $HOME/guid
