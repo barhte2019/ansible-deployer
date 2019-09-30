@@ -19,7 +19,8 @@ restartRHSSO() {
     oc scale dc/sso-mysql --replicas=1 -n $sso_project
     sleep 10
     oc scale dc/sso --replicas=1 -n $sso_project
-    sleep 10
+    echo -en "\nrestartRHSSO:  RH-SSO restarting .... will sleep for 60 seconds\n"
+    sleep 60
 }
 
 refreshPAM() {
